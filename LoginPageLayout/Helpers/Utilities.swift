@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import GoogleSignIn
+import FBSDKLoginKit
 
 class Utilities {
     
@@ -49,7 +51,6 @@ class Utilities {
         button.setTitle("Sign in with Google", for: .normal)
         button.backgroundColor = UIColor.red
         button.layer.borderWidth = 2
-        button.layer.cornerRadius = 25.0
         button.tintColor = UIColor.white
     }
     
@@ -57,7 +58,6 @@ class Utilities {
         button.setTitle("Sign in with Facebook", for: .normal)
         button.backgroundColor = UIColor.blue
         button.layer.borderWidth = 2
-        button.layer.cornerRadius = 25.0
         button.tintColor = UIColor.white
     }
     
@@ -73,5 +73,51 @@ class Utilities {
         let emailTest = NSPredicate(format: "SELF MATCHES %@", "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}")
         return emailTest.evaluate(with: email)
     }
-    
 }
+
+extension UIViewController {
+    
+    func configureNavBar(){
+        view.backgroundColor = .white
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.backgroundColor = .darkGray
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    func showAlert(title: String, message: String) {
+           let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+           
+           let ok = UIAlertAction(title: "OK", style: .default) { (okclick) in
+               
+           }
+           alert.addAction(ok)
+           self.present(alert, animated: true, completion: nil)
+       }
+        
+    func transitionToMainPage(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        let loginVC = storyboard.instantiateViewController(withIdentifier: "rootViewController") as? ViewController
+        
+        guard let loginVC = loginVC else{
+            return
+        }
+        
+        let presentVc = UINavigationController(rootViewController: loginVC)
+        presentVc.modalPresentationStyle = .fullScreen
+        self.present(presentVc, animated: true, completion: nil)
+        print("Show Logout--------------------")
+    }
+}
+
+
+
+
+
+

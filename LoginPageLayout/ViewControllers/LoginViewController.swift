@@ -48,7 +48,7 @@ class LoginViewController: UIViewController {
         {
             return "Please fill in all fields"
         }
-        
+
         //Check if password is valid
         let cleanPassword = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
@@ -56,7 +56,6 @@ class LoginViewController: UIViewController {
             //Password isn't valid
             return "Please make sure your password is at least 8 characters, contains a special character and a number."
         }
-        
         return nil
     }
     
@@ -85,10 +84,7 @@ class LoginViewController: UIViewController {
                     self.errorLabel.alpha = 1
                 }
                 else {
-                    let homeViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
-                    
-                    self.view.window?.rootViewController = homeViewController
-                    self.view.window?.makeKeyAndVisible()
+                    self.dismiss(animated: true)
                 }
             }
         }

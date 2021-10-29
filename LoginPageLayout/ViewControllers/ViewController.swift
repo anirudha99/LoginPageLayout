@@ -16,10 +16,6 @@ import FBSDKLoginKit
 class ViewController: UIViewController {
     
     
-    var videoPlayer:AVPlayer?
-    
-    var videoPlayerLayer: AVPlayerLayer?
-    
     @IBOutlet weak var signUpButton: UIButton!
     
     @IBOutlet weak var loginButton: UIButton!
@@ -33,14 +29,6 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         setUpElements()
-        checkUserAlreadyLoggedIn()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        //Set up video in background
-        //        setUpVideo()
-        
     }
     
     func setUpElements(){
@@ -51,13 +39,13 @@ class ViewController: UIViewController {
         Utilities.styleGoogleButton(googleButton)
         Utilities.styleFacebookButton(facebookButton)
     }
-    
-    let signInConfig = GIDConfiguration.init(clientID: "480556356863-d0jfv8h59vf8dpk5997bhf64cvh7bh83.apps.googleusercontent.com")
+    //
+    //    let signInConfig = GIDConfiguration.init(clientID: "480556356863-d0jfv8h59vf8dpk5997bhf64cvh7bh83.apps.googleusercontent.com")
     
     @IBAction func googleButton(_ sender: UIButton) {
         signInGoogle()
     }
- 
+    
     func signInGoogle(){
         
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
@@ -86,14 +74,9 @@ class ViewController: UIViewController {
                 }
                 else {
                     // User is signed in
-//                    let emailAddress = user?.profile?.email
-//                    let fullName = user?.profile?.name
-//                    let givenName = user?.profile?.givenName
-                    
-                   presentLoggedInHomeScreen()
+                    self.dismiss(animated: true)
                 }
             }
-            
         }
     }
     
@@ -107,86 +90,75 @@ class ViewController: UIViewController {
         
         present(alertController, animated: true, completion: nil)
     }
-    
-    func checkUserAlreadyLoggedIn(){
-        //Previous sign in
-        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-            if error == nil || user != nil {
-                // Show the app's signed-in state.
-                self.presentLoggedInHomeScreen()
-            }
-            else {
-                return
-            }
-        }
-        
-        if let token = AccessToken.current,
-           !token.isExpired {
-                // User is logged in, do work such as go to next view controller.
-            self.presentLoggedInHomeScreen()
-        }
-        else{
-            
-            facebookButton.permissions = ["public_profile", "email"]
-            facebookButton.delegate = self
-        }
-    }
-    
-    func presentLoggedInHomeScreen(){
-        let homeViewController = self.storyboard?.instantiateViewController(withIdentifier: Constants.Storyboard.homeViewController) as? HomeViewController
-        
-        self.view.window?.rootViewController = homeViewController
-        self.view.window?.makeKeyAndVisible()
-    }
-    
-    
-    //    func setUpVideo(){
-    //
-    //        //Get the path to the resource in the bundle
-    //        let bundlePath = Bundle.main.path(forResource: "loginbg", ofType: "mp4")
-    //
-    //        guard bundlePath != nil else{
-    //            return
-    //        }
-    //
-    //        //Create a URL from it
-    //        let url = URL(fileURLWithPath: bundlePath!)
-    //
-    //        //Create the video player item
-    //        let item = AVPlayerItem(url: url)
-    //
-    //        //Create the player
-    //        videoPlayer = AVPlayer(playerItem: item)
-    //
-    //        //Create the layer
-    //        videoPlayerLayer = AVPlayerLayer(player: videoPlayer!)
-    //
-    //        //Adjust the size and frame
-    //        videoPlayerLayer?.frame = CGRect(x: -self.view.frame.size.width*1.5, y: 0, width: self.view.frame.size.width*4, height: self.view.frame.size.height)
-    //
-    //        view.layer.insertSublayer(videoPlayerLayer!, at: 0)
-    //
-    //        //Add it or play it
-    //        videoPlayer?.playImmediately(atRate: 0.3)
-    //    }
-    
 }
+
+//extension ViewController: LoginButtonDelegate {
+//
+//    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+//        let loginManager = LoginManager()
+//        loginManager.logIn(permissions: ["public_profile", "email"], from: self) { (result, error) in
+//            if let error = error {
+//                print("Failed to login: \(error.localizedDescription)")
+//                return
+//            }
+//
+//            guard let accessToken = AccessToken.current else {
+//                print("Failed to get access token")
+//                return
+//            }
+//
+//            let credential = FacebookAuthProvider.credential(withAccessToken: accessToken.tokenString)
+//
+//            // Perform login by calling Firebase APIs
+//            Auth.auth().signIn(with: credential) { (user, error) in
+//                if let error = error {
+//                    print("Login error: \(error.localizedDescription)")
+//                    let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
+//                    let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                    alertController.addAction(okayAction)
+//                    self.present(alertController, animated: true, completion: nil)
+//
+//                    return
+//                }else {
+//
+//                    self.presentLoggedInHomeScreen()
+//                }
+//            }
+//
+//        }
+//    }
+//    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+//
+//    }
+//}
 
 extension ViewController: LoginButtonDelegate {
-    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        
-        let token = result?.token?.tokenString
-        
-        let request = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields":"email, name"], tokenString: token, version: nil, httpMethod: .get)
-        request.start { connection, result, error in
-            
-            print("\(result)")
-        }
-        self.presentLoggedInHomeScreen()
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+    
     }
     
-    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+    
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+            
+            let token = result?.token?.tokenString
+            
+            let request = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields":"email, name"], tokenString: token, version: nil, httpMethod: .get)
+            request.start { connection, result, error in
+                
+                print("\(result)")
+                print("=======")
+            }
+            self.dismiss(animated: true)
+        }
         
     }
-}
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
