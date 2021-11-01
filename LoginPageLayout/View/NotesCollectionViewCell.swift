@@ -39,7 +39,7 @@ class NotesCollectionViewCell: UICollectionViewCell {
     
     var noteDeleteButton: UIButton = {
         let delbtn = UIButton()
-        delbtn.backgroundColor = UIColor.black
+//        delbtn.backgroundColor = UIColor.black
 //        delbtn.setTitle("Delete", for: UIControl.State.normal)
         delbtn.setImage(UIImage(systemName: "xmark.bin"), for: UIControl.State.normal)
         return delbtn

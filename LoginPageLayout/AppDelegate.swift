@@ -11,7 +11,7 @@ import CoreData
 import GoogleSignIn
 import FBSDKCoreKit
 import FBSDKLoginKit
-import FirebaseFirestore 
+//import FirebaseFirestore 
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

@@ -62,5 +62,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string>Please allow access to select a file</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please allow access to select a photo for your profile</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow access to select a photo for your profile</string>
 </dict>
 </plist>

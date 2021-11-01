@@ -5,12 +5,12 @@
 //  Created by Anirudha SM on 26/10/21.
 //
 
-import Foundation
 import UIKit
 import CoreData
 import FirebaseFirestore
 import FirebaseCore
 import Firebase
+import RealmSwift
 
 
 //class NoteController: UITableViewController
@@ -21,6 +21,10 @@ class NoteController: UIViewController, UITextFieldDelegate{
     var isNew: Bool = true
     
     var note: NoteItem?
+    var noteRealm :NotesItem?
+//    var realmNote: RealmNote?
+    
+    let realmInstance = try! Realm()
     
     @IBOutlet weak var titleField: UITextField!
     
@@ -46,25 +50,6 @@ class NoteController: UIViewController, UITextFieldDelegate{
         view.backgroundColor = .darkGray
     }
     
-    //    override func viewWillAppear(_ animated: Bool) {
-    //        guard let appDelegate =
-    //          UIApplication.shared.delegate as? AppDelegate else {
-    //            return
-    //        }
-    //
-    //        let managedContext =
-    //          appDelegate.persistentContainer.viewContext
-    //
-    //        let fetchRequest =
-    //          NSFetchRequest<NSManagedObject>(entityName: "Items")
-    //
-    //        do {
-    //          itemArr = try managedContext.fetch(fetchRequest)
-    //        } catch let error as NSError {
-    //          print("Could not fetch. \(error), \(error.userInfo)")
-    //        }
-    //    }
-    
     //MARK: - Selectors
     
     //save new note or update the data
@@ -75,6 +60,22 @@ class NoteController: UIViewController, UITextFieldDelegate{
         } else if isNew {
             let db = Firestore.firestore()
             let newDoc = db.collection("notes").document()
+//            let newNote = NoteItem(id: newDoc.documentID, title: titleField.text!,
+//                                               note: noteField.text!,
+//                                               user: NetworkManager.shared.getUID()!,
+//                                               date: Date())
+            
+//            let realmNote = RealmNote()
+            let realmNote = NotesItem()
+            realmNote.title = titleField.text!
+            realmNote.note = noteField.text!
+            realmNote.uid = NetworkManager.shared.getUID()!
+            realmNote.date = Date()
+            RealmManager.shared.addNote(note: realmNote)
+            
+            //            NetworkManager.shared.addNote(note: newNote.dictionary)
+            //                       PersistentManager.shared.addNote(note: realmNote)
+           
             let content: [String: Any] = ["id": newDoc.documentID , "title": titleField.text!, "note": noteField.text!, "user": NetworkManager.shared.getUID()!,"date": Date()]
             
             db.collection("notes").addDocument(data: content)
@@ -84,6 +85,8 @@ class NoteController: UIViewController, UITextFieldDelegate{
             note?.note = noteField.text!
             
             NetworkManager.shared.updateData(note: note!)
+            //RealmManager.shared.updateNote(note?.title,note?.note)
+//            PersistentManager.shared.updateNote(note: realmNote!, title: titleField.text!, description: noteField.text!)
             dismiss(animated: true)
         }
     }
@@ -117,28 +120,17 @@ class NoteController: UIViewController, UITextFieldDelegate{
         dismiss(animated: true, completion: nil)
     }
     
+    func printNotes(){
+        
+        let notes = realmInstance.objects(NotesItem.self)
+        for note in notes
+        {
+            print(note)
+        }
+    }
+    
     @objc func handleAddNote() {
-        //        let alert = UIAlertController(title: "New Note",
-        //                                      message: "Add a new note",
-        //                                      preferredStyle: .alert)
-        //        let saveAction = UIAlertAction(title: "Save", style: .default) {
-        //            [unowned self] action in
-        //            guard let textField = alert.textFields?.first,
-        //                  let noteToSave = textField.text else {
-        //                      return
-        //                  }
-        //            self.save(item: noteToSave)
-        //            self.tableView.reloadData()
-        //          }
-        //        let cancelAction = UIAlertAction(title: "Cancel",
-        //                                         style: .cancel)
-        //
-        //        alert.addTextField()
-        //
-        //        alert.addAction(saveAction)
-        //        alert.addAction(cancelAction)
-        //
-        //        present(alert, animated: true)
+       
     }
     
     //MARK: - Helper functions
@@ -155,45 +147,6 @@ class NoteController: UIViewController, UITextFieldDelegate{
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "add")!.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleAddNote))
     }
-    
-    //    func save(item:String){
-    //        guard let appDelegate =
-    //          UIApplication.shared.delegate as? AppDelegate else {
-    //          return
-    //        }
-    //
-    //        let managedContext =
-    //          appDelegate.persistentContainer.viewContext
-    //
-    //        let entity =
-    //          NSEntityDescription.entity(forEntityName: "Items",
-    //                                     in: managedContext)!
-    //
-    //        let title = NSManagedObject(entity: entity,
-    //                                     insertInto: managedContext)
-    //
-    //        title.setValue(item, forKeyPath: "item")
-    //
-    //        do {
-    //          try managedContext.save()
-    //            itemArr.append(title)
-    //        } catch let error as NSError {
-    //          print("Could not save. \(error), \(error.userInfo)")
-    //        }
-    //    }
-    
-    //    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    //        return itemArr.count
-    //    }
-    
-    //    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //        let item = itemArr[indexPath.row]
-    //
-    //        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-    //        cell.textLabel?.text =
-    //          item.value(forKeyPath: "item") as? String
-    //        return cell
-    //    }
     
 }
 

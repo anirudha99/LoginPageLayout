@@ -11,6 +11,7 @@ import GoogleSignIn
 import FBSDKLoginKit
 import FirebaseFirestore
 import CoreMedia
+import Firebase
 
 
 func signOut() -> Bool{
@@ -42,6 +43,10 @@ struct NetworkManager {
     
     func getUID() -> String? {
         return Auth.auth().currentUser?.uid
+    }
+    
+    func addNote(note: [String: Any]) {
+        db.collection("notes").addDocument(data: note)
     }
     
     //    func writeDB(documentName: String, data: [String: Any]) {

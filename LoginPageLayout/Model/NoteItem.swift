@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import Firebase
 
 struct NoteItem: Codable{
     var id: String
@@ -15,16 +16,12 @@ struct NoteItem: Codable{
     var user: String
     var date: Date
     
-//    var dictionary: [String: Any] {
-//            return[
-//            "title": title,
-//            "note": note,
-//            "user": user,
-//            "date": date
-//            ]
-//        }
+    var dictionary: [String: Any] {
+            return[
+            "title": title,
+            "note": note,
+            "user": user,
+            "date": date
+            ]
+        }
 }
-
-//struct NoteDocId: Codable{
-//    var id : String
-//}

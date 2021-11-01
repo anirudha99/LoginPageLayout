@@ -11,6 +11,7 @@ import GoogleSignIn
 import FBSDKLoginKit
 import Firebase
 import FirebaseFirestore
+import RealmSwift
 
 let cellIdentifer = "NotesCollectionViewCell"
 
@@ -18,15 +19,16 @@ class HomeViewController: UIViewController {
     
     //MARK: – Properties
     var delegate: HomeViewControllerDelegate?
-    
     var noteCollection : UICollectionView!
     
+    let realmInstance = try! Realm()
+    
+    var notesRealm : [NotesItem] = []
     var noteList: [NoteItem] = []
     
     var isListView = false
     
     var toggleButton = UIBarButtonItem()
-    
     var addButton = UIBarButtonItem()
     
     override func viewDidLoad() {
@@ -42,6 +44,9 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         fetchData()
+        fetchNoteRealm()
+//        getRealmData()
+        self.noteCollection.reloadData()
     }
     
     //MARK: - Handlers
@@ -90,7 +95,7 @@ class HomeViewController: UIViewController {
         
         navigationItem.title = "Home Screen"
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem (image: UIImage(systemName: "list.bullet.circle")?.withRenderingMode(.automatic), style: .plain, target: self, action: #selector(handleMenuToggle))
+        navigationItem.leftBarButtonItem = UIBarButtonItem (image: UIImage(systemName: "list.bullet.circle")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleMenuToggle))
         
         toggleButton = UIBarButtonItem(image: UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal),style: .plain, target: self, action: #selector(toggleButtontapped))
         
@@ -120,12 +125,28 @@ class HomeViewController: UIViewController {
         })
     }
     
+    func fetchNoteRealm(){
+        RealmManager.shared.fetchNotes{ notesArray in
+            self.notesRealm = notesArray
+        }
+        //print(notesRealm)
+    }
+    
+    
     //delete function
     @objc func deleteNote(_ sender: UIButton){
         print("Delete button pressed")
+        
         let deleteNote = noteList[sender.tag]
+        
+//        let realmDeleteNote = notesRealm[sender.tag]
+        
         print(deleteNote.title)
+        
         NetworkManager.shared.deleteData(note: deleteNote)
+        RealmManager.shared.deleteNote(index: sender.tag)
+//        RealmManager.shared.deleteNote(note: realmDeleteNote)
+        
         noteList.remove(at: sender.tag)
         noteCollection.reloadData()
     }
@@ -134,8 +155,10 @@ class HomeViewController: UIViewController {
     @objc func toggleButtontapped(){
         if isListView {
             isListView = false
+            toggleButton.image = UIImage(systemName: "list.bullet")?.withRenderingMode(.alwaysOriginal)
         } else {
             isListView = true
+            toggleButton.image = UIImage(systemName: "rectangle.split.2x1")?.withRenderingMode(.alwaysOriginal)
         }
         noteCollection.reloadData()
     }
@@ -160,7 +183,6 @@ class HomeViewController: UIViewController {
             return
         }
     }
-    
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -185,13 +207,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let noteVc = storyboard.instantiateViewController(withIdentifier: "NoteController") as? NoteController
         guard let noteVc = noteVc else{ return }
         
         noteVc.isNew = false
         noteVc.note = noteList[indexPath.row]
+        noteVc.noteRealm = notesRealm[indexPath.row]
         
         let presentVC = UINavigationController(rootViewController: noteVc)
         presentVC.modalPresentationStyle = .fullScreen

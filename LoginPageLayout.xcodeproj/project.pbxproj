@@ -24,12 +24,13 @@
 		1CC8D1CC27291F920047D20E /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC8D1CB27291F920047D20E /* SettingsController.swift */; };
 		1CC8D1CE27291FA90047D20E /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC8D1CD27291FA90047D20E /* NotificationController.swift */; };
 		1CC8D1D02729207B0047D20E /* NoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC8D1CF2729207B0047D20E /* NoteController.swift */; };
-		1CCE539E272BA36B0001F162 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCE539D272BA36B0001F162 /* DatabaseManager.swift */; };
 		1CCE53A0272BA37A0001F162 /* PersistantManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CCE539F272BA37A0001F162 /* PersistantManager.swift */; };
 		1CD1110A2726E35D0074BE29 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD111092726E35D0074BE29 /* Protocol.swift */; };
 		1CD111112726E4930074BE29 /* ContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD111102726E4930074BE29 /* ContainerController.swift */; };
 		1CD111132726F6620074BE29 /* MenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD111122726F6620074BE29 /* MenuOptionCell.swift */; };
 		1CD111152726F7BD0074BE29 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD111142726F7BD0074BE29 /* MenuController.swift */; };
+		1CDDF329272EE70B009708C3 /* NotesItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDDF328272EE70B009708C3 /* NotesItem.swift */; };
+		1CDDF32B272EE76B009708C3 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CDDF32A272EE76B009708C3 /* RealmManager.swift */; };
 		1CE257D7271EAB6700506CBC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE257D6271EAB6700506CBC /* SignUpViewController.swift */; };
 		1CE257D9271EAB7100506CBC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE257D8271EAB7100506CBC /* LoginViewController.swift */; };
 		1CE257DB271EAB7D00506CBC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE257DA271EAB7D00506CBC /* HomeViewController.swift */; };
@@ -72,12 +73,13 @@
 		1CC8D1CB27291F920047D20E /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		1CC8D1CD27291FA90047D20E /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		1CC8D1CF2729207B0047D20E /* NoteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteController.swift; sourceTree = "<group>"; };
-		1CCE539D272BA36B0001F162 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		1CCE539F272BA37A0001F162 /* PersistantManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistantManager.swift; sourceTree = "<group>"; };
 		1CD111092726E35D0074BE29 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		1CD111102726E4930074BE29 /* ContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerController.swift; sourceTree = "<group>"; };
 		1CD111122726F6620074BE29 /* MenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOptionCell.swift; sourceTree = "<group>"; };
 		1CD111142726F7BD0074BE29 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		1CDDF328272EE70B009708C3 /* NotesItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesItem.swift; sourceTree = "<group>"; };
+		1CDDF32A272EE76B009708C3 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		1CE257D6271EAB6700506CBC /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		1CE257D8271EAB7100506CBC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		1CE257DA271EAB7D00506CBC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			children = (
 				1CC8D1C42729155B0047D20E /* MenuOption.swift */,
 				1C9DA5372729BE71003B2465 /* NoteItem.swift */,
+				1CDDF328272EE70B009708C3 /* NotesItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -226,8 +229,8 @@
 			isa = PBXGroup;
 			children = (
 				1CE2E6062727B7DF00FAD69C /* NetworkManager.swift */,
-				1CCE539D272BA36B0001F162 /* DatabaseManager.swift */,
 				1CCE539F272BA37A0001F162 /* PersistantManager.swift */,
+				1CDDF32A272EE76B009708C3 /* RealmManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -410,13 +413,14 @@
 				1C962EE1271D233700A42563 /* LoginPageLayout.xcdatamodeld in Sources */,
 				1C9DA5382729BE71003B2465 /* NoteItem.swift in Sources */,
 				1CD111112726E4930074BE29 /* ContainerController.swift in Sources */,
-				1CCE539E272BA36B0001F162 /* DatabaseManager.swift in Sources */,
+				1CDDF329272EE70B009708C3 /* NotesItem.swift in Sources */,
 				1C962EDB271D233700A42563 /* ViewController.swift in Sources */,
 				1C962ED7271D233700A42563 /* AppDelegate.swift in Sources */,
 				1C962ED9271D233700A42563 /* SceneDelegate.swift in Sources */,
 				1C9DA53A2729CA11003B2465 /* NotesCollectionViewCell.swift in Sources */,
 				1CCE53A0272BA37A0001F162 /* PersistantManager.swift in Sources */,
 				1CE257DB271EAB7D00506CBC /* HomeViewController.swift in Sources */,
+				1CDDF32B272EE76B009708C3 /* RealmManager.swift in Sources */,
 				1CC8D1C827291F760047D20E /* ProfileController.swift in Sources */,
 				1CC8D1D02729207B0047D20E /* NoteController.swift in Sources */,
 				1CD111152726F7BD0074BE29 /* MenuController.swift in Sources */,
@@ -669,7 +673,6 @@
 					"$(inherited)",
 					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
 					"\"${PODS_TARGET_SRCROOT}/Sources/FBLPromises/include\"",
-					"$(SRCROOT)/Pods/**",
 				);
 				INFOPLIST_FILE = LoginPageLayout/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -725,7 +728,6 @@
 					"$(inherited)",
 					"${PODS_ROOT}/Firebase/CoreOnly/Sources",
 					"\"${PODS_TARGET_SRCROOT}/Sources/FBLPromises/include\"",
-					"$(SRCROOT)/Pods/**",
 				);
 				INFOPLIST_FILE = LoginPageLayout/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
