@@ -18,8 +18,6 @@ class ProfileController: UIViewController {
     //MARK: - Properties
     @IBOutlet weak var profilePageLabel: UILabel!
     
-    @IBOutlet weak var NameTextField: UITextField!
-
     @IBOutlet weak var profileImage: UIImageView!
     
     @IBOutlet weak var pullImage: UIButton!
@@ -28,6 +26,10 @@ class ProfileController: UIViewController {
     
     var imagePickerController: UIImagePickerController!
     
+//    private let storage = Storage.storage().reference()
+//    let defaultImage: UIImage = UIImage(systemName: "person")!
+    
+    
     //MARK: - Init
     
     override func viewDidLoad() {
@@ -35,17 +37,19 @@ class ProfileController: UIViewController {
         
         configureNavBar()
         configureUI()
+        getImage()
+        
         imagePickerController = UIImagePickerController()
         imagePickerController.allowsEditing = true
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self
-        checkPermissions()
+        
         
         let imageTap = UITapGestureRecognizer(target: self, action: #selector(openImagePicker))
-        profileImage.isUserInteractionEnabled = true
-        profileImage.addGestureRecognizer(imageTap)
-        profileImage.layer.cornerRadius = profileImage.bounds.height/2
-        profileImage.clipsToBounds = true
+//        profileImage.isUserInteractionEnabled = true
+//        profileImage.addGestureRecognizer(imageTap)
+//        profileImage.layer.cornerRadius = profileImage.bounds.height/2
+//        profileImage.clipsToBounds = true
         choosePictureBtn.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
         
     }
@@ -64,132 +68,98 @@ class ProfileController: UIViewController {
     }
     
     @IBAction func pullImageTapped(_ sender: UIButton) {
-//        let storage = Storage.storage()
-//        let storageRef = storage.reference()
-//        let ref = storageRef.child("UploadphotoOne")
-//
-//        print(ref)
-//        profileImage.sd_setImage(with: ref )
-
+        self.profileImage.image = Constants.Image.profileDefaultImage
+        UserDefaults.standard.set("", forKey: "url")
     }
     
     @IBAction func choosePictureBtn(_ sender: UIButton) {
-//        self.imagePickerController.sourceType = .photoLibrary
-//        self.present(self.imagePickerController,animated: true)
     }
     
-    func checkPermissions(){
-        if PHPhotoLibrary.authorizationStatus() != PHAuthorizationStatus.authorized{
-            PHPhotoLibrary.requestAuthorization(
-                { (status: PHAuthorizationStatus)-> Void in
-                    ()
-                })
-        }
-        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized{
-            
-        } else{
-            PHPhotoLibrary.requestAuthorization(requestAuthorizationHandler)
-        }
-    }
-    
-    func requestAuthorizationHandler(status: PHAuthorizationStatus){
-        if PHPhotoLibrary.authorizationStatus() == PHAuthorizationStatus.authorized{
-            print("You have access to photos")
-        } else{
-            print("You don't have access to photos")
-        }
-    }
-    
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
-//        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-//            print(url)
-//            uploadToFirebase(fileURL: url)
-//        }
-//        imagePickerController.dismiss(animated: true, completion: nil)
-//    }
-//
-    
-    func uploadProfileImage(_ image : UIImage, completion : @escaping((_ url: URL?)->())){
-        guard let uid = NetworkManager.shared.getUID() else{
-            return
-        }
-        let storageRef = Storage.storage().reference().child("user/\(uid)")
-        
-        guard let imageData = image.jpegData(compressionQuality: 0.75) else{
-            return
-        }
-        
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpg"
-        
-        storageRef.putData(imageData, metadata: metaData) { metaData, error in
-            if error == nil, metaData != nil {
-                //success
-                storageRef.downloadURL { url, error in
-                    completion(url)
-                }
-            } else {
-                //fail
-                completion(nil)
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    func uploadToFirebase(fileURL: URL){
+//    func uploadProfileImage(_ image : UIImage, completion : @escaping((_ url: URL?)->())){
 //        guard let uid = NetworkManager.shared.getUID() else{
 //            return
 //        }
-        let storage = Storage.storage()
-        
-        let data = Data()
-        
-        let storageRef = storage.reference()
-        
-        let localFile = fileURL
-        
-        let photoRef = storageRef.child("UploadphotoOne")
-        
-        let uploadTask = photoRef.putFile(from: localFile, metadata: nil) { (metadata, err) in
-            guard let metadata =  metadata else{
-                print(err?.localizedDescription)
-                return
-            }
-            print("Photo  Upload")
-        }
-    }
+//        let storageRef = Storage.storage().reference().child("user/\(uid)")
+//        
+//        guard let imageData = image.jpegData(compressionQuality: 0.75) else{
+//            return
+//        }
+//        
+//        let metaData = StorageMetadata()
+//        metaData.contentType = "image/jpg"
+//        
+//        storageRef.putData(imageData, metadata: metaData) { metaData, error in
+//            if error == nil, metaData != nil {
+//                //success
+//                storageRef.downloadURL { url, error in
+//                    completion(url)
+//                }
+//            } else {
+//                //fail
+//                completion(nil)
+//            }
+//        }
+//    }
     
     //MARK: - Helper functions
     
     func configureUI(){
-//        navigationController?.navigationBar.barTintColor = .darkGray
+        //        navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Profile"
-//        navigationController?.navigationBar.barStyle = .black
-        
+        //        navigationController?.navigationBar.barStyle = .black
+        view.backgroundColor = .systemGray5
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark.app.fill")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismiss))
+    }
+    
+    func getImage(){
+//        guard let urlimagestring = UserDefaults.standard.url(forKey: "url") as? String else { return }
+        guard let urlString = UserDefaults.standard.value(forKey: "url") as? String else { return }
+        print("________-----------_______")
+//        print(urlimagestring)
+        print(urlString)
+        NetworkManager.shared.downloadImage(fromURL: urlString) { image in
+            guard let image = image else {
+                self.profileImage.image = Constants.Image.profileDefaultImage
+                return
+            }
+            DispatchQueue.main.async {
+                self.profileImage.image = image
+            }
+            
+        }
     }
 }
 
 extension ProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
-   func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
-       picker.dismiss(animated: true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+        picker.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
         
-        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
-            self.profileImage.image = pickedImage
+        guard let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else{
+            return
         }
-        
-//        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-//            print("-----------------------")
-//            print(url)
-//            uploadToFirebase(fileURL: url)
+        self.profileImage.image = image
+        ImageUploader.uploadImage(image: image)
+//        guard let imageData = image.pngData() else {
+//            return
+//        }
+//        storage.child("profile/file.png").putData(imageData, metadata: nil) { _, error in
+//            guard error == nil else {
+//                return
+//            }
+//
+//            self.storage.child("profile/file.png").downloadURL { url, error in
+//                guard let url = url, error == nil else {
+//                    return
+//                }
+//                let urlString = url.absoluteString
+//                print("Download URL: \(urlString)")
+//                UserDefaults.standard.set(urlString, forKey: "url")
+//            }
 //        }
         picker.dismiss(animated: true, completion: nil)
     }

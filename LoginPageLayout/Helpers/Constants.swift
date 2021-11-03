@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Constants{
     
@@ -13,6 +14,10 @@ struct Constants{
         
         static let homeViewController = "HomeVC"
     }
-    
+  
+    struct Image{
+        
+       static let profileDefaultImage: UIImage = UIImage(systemName: "person")!
+    }
     
 }

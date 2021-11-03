@@ -65,16 +65,12 @@ class NoteController: UIViewController, UITextFieldDelegate{
 //                                               user: NetworkManager.shared.getUID()!,
 //                                               date: Date())
             
-//            let realmNote = RealmNote()
             let realmNote = NotesItem()
             realmNote.title = titleField.text!
             realmNote.note = noteField.text!
             realmNote.uid = NetworkManager.shared.getUID()!
             realmNote.date = Date()
             RealmManager.shared.addNote(note: realmNote)
-            
-            //            NetworkManager.shared.addNote(note: newNote.dictionary)
-            //                       PersistentManager.shared.addNote(note: realmNote)
            
             let content: [String: Any] = ["id": newDoc.documentID , "title": titleField.text!, "note": noteField.text!, "user": NetworkManager.shared.getUID()!,"date": Date()]
             
@@ -85,8 +81,7 @@ class NoteController: UIViewController, UITextFieldDelegate{
             note?.note = noteField.text!
             
             NetworkManager.shared.updateData(note: note!)
-            //RealmManager.shared.updateNote(note?.title,note?.note)
-//            PersistentManager.shared.updateNote(note: realmNote!, title: titleField.text!, description: noteField.text!)
+
             dismiss(animated: true)
         }
     }

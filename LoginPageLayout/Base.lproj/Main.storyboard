@@ -283,9 +283,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tiu-BT-hyZ">
-                                <rect key="frame" x="123" y="612" width="168" height="31"/>
+                                <rect key="frame" x="107" y="612" width="200" height="31"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Download image"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Remove Picture"/>
                                 <connections>
                                     <action selector="pullImageTapped:" destination="QhV-hO-IJt" eventType="touchUpInside" id="0lI-0p-Y1L"/>
                                 </connections>
@@ -298,26 +298,28 @@
                                     <action selector="choosePictureBtn:" destination="QhV-hO-IJt" eventType="touchUpInside" id="qWf-es-qdY"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="roe-8c-RCr">
-                                <rect key="frame" x="87" y="333" width="240" height="128"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="roe-8c-RCr">
+                                <rect key="frame" x="57" y="233" width="300" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="M8i-Hj-nFf"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="edN-CZ-g3e"/>
-                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <color key="backgroundColor" systemColor="systemGray2Color"/>
                         <constraints>
                             <constraint firstItem="edN-CZ-g3e" firstAttribute="bottom" secondItem="3J4-KY-hXS" secondAttribute="bottom" constant="47" id="5FX-tI-tM6"/>
-                            <constraint firstItem="roe-8c-RCr" firstAttribute="leading" secondItem="edN-CZ-g3e" secondAttribute="leading" constant="87" id="8wF-12-RpS"/>
+                            <constraint firstItem="tiu-BT-hyZ" firstAttribute="leading" secondItem="edN-CZ-g3e" secondAttribute="leading" constant="107" id="85O-DJ-0Pn"/>
+                            <constraint firstItem="roe-8c-RCr" firstAttribute="leading" secondItem="edN-CZ-g3e" secondAttribute="leading" constant="57" id="B6o-LT-laO"/>
                             <constraint firstItem="3hG-Gc-dO6" firstAttribute="leading" secondItem="edN-CZ-g3e" secondAttribute="leading" constant="107" id="GcT-25-rDQ"/>
                             <constraint firstItem="3J4-KY-hXS" firstAttribute="top" secondItem="tiu-BT-hyZ" secondAttribute="bottom" constant="141" id="JBJ-ED-fzl"/>
-                            <constraint firstItem="roe-8c-RCr" firstAttribute="top" secondItem="3hG-Gc-dO6" secondAttribute="bottom" constant="169" id="N2t-vV-1ve"/>
                             <constraint firstItem="3hG-Gc-dO6" firstAttribute="top" secondItem="edN-CZ-g3e" secondAttribute="top" constant="70" id="SfU-xo-4PW"/>
                             <constraint firstItem="edN-CZ-g3e" firstAttribute="trailing" secondItem="3hG-Gc-dO6" secondAttribute="trailing" constant="107" id="U9I-7L-USN"/>
-                            <constraint firstItem="edN-CZ-g3e" firstAttribute="trailing" secondItem="tiu-BT-hyZ" secondAttribute="trailing" constant="123" id="eZY-pc-Bch"/>
-                            <constraint firstItem="tiu-BT-hyZ" firstAttribute="leading" secondItem="edN-CZ-g3e" secondAttribute="leading" constant="123" id="fsz-Ah-V76"/>
+                            <constraint firstItem="roe-8c-RCr" firstAttribute="top" secondItem="3hG-Gc-dO6" secondAttribute="bottom" constant="69" id="Zeb-cn-WW9"/>
+                            <constraint firstItem="roe-8c-RCr" firstAttribute="centerX" secondItem="3hG-Gc-dO6" secondAttribute="centerX" id="nkq-JA-NXD"/>
                             <constraint firstItem="edN-CZ-g3e" firstAttribute="trailing" secondItem="3J4-KY-hXS" secondAttribute="trailing" constant="107" id="rMn-L3-09w"/>
-                            <constraint firstItem="tiu-BT-hyZ" firstAttribute="top" secondItem="roe-8c-RCr" secondAttribute="bottom" constant="151" id="uKg-QU-wNr"/>
                             <constraint firstItem="3J4-KY-hXS" firstAttribute="leading" secondItem="edN-CZ-g3e" secondAttribute="leading" constant="107" id="ujB-1p-pxm"/>
-                            <constraint firstItem="edN-CZ-g3e" firstAttribute="trailing" secondItem="roe-8c-RCr" secondAttribute="trailing" constant="87" id="zSF-G1-hVt"/>
+                            <constraint firstItem="edN-CZ-g3e" firstAttribute="trailing" secondItem="tiu-BT-hyZ" secondAttribute="trailing" constant="107" id="vIe-Dz-vur"/>
                         </constraints>
                     </view>
                     <connections>
@@ -401,8 +403,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

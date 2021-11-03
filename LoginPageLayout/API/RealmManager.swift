@@ -30,14 +30,6 @@ struct RealmManager {
         })
     }
     
-//    mutating func deleteNote(index:Int){
-////        let notesReal = realmInstance.objects(NotesItem.self)
-//        try! realmInstance.write({
-//            realmInstance.delete(notesRealm[index])
-//        })
-//        notesRealm.remove(at:index)
-//    }
-    
     func updateNote(_ title:String,_ noteContent:String, note:NotesItem){
         let realmInstance = try! Realm()
         try! realmInstance.write({
@@ -49,22 +41,30 @@ struct RealmManager {
         
     }
     
-    mutating  func fetchNotes(completion :@escaping([NotesItem])->Void) {
+    mutating func fetchNotes(completion :@escaping([NotesItem])->Void) {
         let userid = NetworkManager.shared.getUID()
-//        print(userid)
+        //        print(userid)
         var notesArray :[NotesItem] = []
-//        let notes = realmInstance.objects(NotesItem.self)
+        //        let notes = realmInstance.objects(NotesItem.self)
         let predicate = NSPredicate.init(format: "%K == %@", "uid",userid!)
         let notes = realmInstance.objects(NotesItem.self).filter(predicate)
         for note in notes
         {
-//            notesRealm.append(note)
+            //notesRealm.append(note)
             notesArray.append(note)
-            
         }
         completion(notesArray)
         print(notes)
-        
     }
+    
+//    mutating func fetchNotesPag(){
+//        var notesRealm : [NotesItem] = []
+//        let notes = realmInstance.objects(NotesItem.self)
+//        for note in notes{
+//            notesRealm.append(note)
+//        }
+//        print("Aaaaaaaaaa1111!!!!!!!!!!!!!!!!!!!!!!")
+//        print(notesRealm)
+//    }
 }
 

@@ -11,6 +11,15 @@ class NotesCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
+    var note: NoteItem {
+        didSet{
+            noteTitleLabel.text = note.title
+            noteLabel.text = note.note
+        }
+    }
+    
+    var activityIndicator: UIActivityIndicatorView!
+    
     let noteTitleLabel : UILabel = {
         let label = UILabel()
         label.backgroundColor = .darkGray
@@ -61,15 +70,10 @@ class NotesCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .darkGray
         
+        init(note:NoteItem){
+            self.note = self.note
+        }
         configure()
-        
-//        addSubview(noteTitleLabel)
-//        noteTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        noteTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-//
-//        addSubview(noteLabel)
-//        noteLabel.translatesAutoresizingMaskIntoConstraints = false
-//        noteLabel.centerYAnchor.constraint(equalTo: noteTitleLabel.bottomAnchor).isActive = true
     }
     
     
@@ -106,7 +110,6 @@ class NotesCollectionViewCell: UICollectionViewCell {
             noteDeleteButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
             noteDeleteButton.heightAnchor.constraint(equalToConstant: 15),
             noteDeleteButton.widthAnchor.constraint(equalToConstant: 15),
-           
           
 //            listViewButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
 //            listViewButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
@@ -114,14 +117,9 @@ class NotesCollectionViewCell: UICollectionViewCell {
 //            listViewButton.widthAnchor.constraint(equalToConstant: 15),
 //            listViewButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 12),
 //            listViewButton.centerYAnchor.constraint(equalTo: centerYAnchor)
-
-            
         ])
     }
-
 }
-
-//------------------------------
 
 
 

@@ -16,6 +16,14 @@ struct NoteItem: Codable{
     var user: String
     var date: Date
     
+    init(id: String, title: String, note: String, user: String, date: Date){
+        self.id = id
+        self.title = title
+        self.note = note
+        self.user = user
+        self.date = date
+    }
+    
     var dictionary: [String: Any] {
             return[
             "title": title,
