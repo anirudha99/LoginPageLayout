@@ -18,6 +18,7 @@
 		1C962EE6271D233800A42563 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C962EE4271D233800A42563 /* LaunchScreen.storyboard */; };
 		1C9DA5382729BE71003B2465 /* NoteItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9DA5372729BE71003B2465 /* NoteItem.swift */; };
 		1C9DA53A2729CA11003B2465 /* NotesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9DA5392729CA11003B2465 /* NotesCollectionViewCell.swift */; };
+		1CC774A9273814EA009094E3 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC774A8273814EA009094E3 /* DatabaseManager.swift */; };
 		1CC8D1C52729155B0047D20E /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC8D1C42729155B0047D20E /* MenuOption.swift */; };
 		1CC8D1C827291F760047D20E /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC8D1C727291F760047D20E /* ProfileController.swift */; };
 		1CC8D1CA27291F850047D20E /* InboxController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC8D1C927291F850047D20E /* InboxController.swift */; };
@@ -67,6 +68,7 @@
 		1C962EE7271D233800A42563 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C9DA5372729BE71003B2465 /* NoteItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteItem.swift; sourceTree = "<group>"; };
 		1C9DA5392729CA11003B2465 /* NotesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesCollectionViewCell.swift; sourceTree = "<group>"; };
+		1CC774A8273814EA009094E3 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		1CC8D1C42729155B0047D20E /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		1CC8D1C727291F760047D20E /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		1CC8D1C927291F850047D20E /* InboxController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxController.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				1CE2E6062727B7DF00FAD69C /* NetworkManager.swift */,
 				1CDDF32A272EE76B009708C3 /* RealmManager.swift */,
 				1CD4B0222730E97F00AB8E01 /* ImageUploader.swift */,
+				1CC774A8273814EA009094E3 /* DatabaseManager.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 			files = (
 				1CC8D1CC27291F920047D20E /* SettingsController.swift in Sources */,
 				1CE257D9271EAB7100506CBC /* LoginViewController.swift in Sources */,
+				1CC774A9273814EA009094E3 /* DatabaseManager.swift in Sources */,
 				1C962EE1271D233700A42563 /* LoginPageLayout.xcdatamodeld in Sources */,
 				1C9DA5382729BE71003B2465 /* NoteItem.swift in Sources */,
 				1CD111112726E4930074BE29 /* ContainerController.swift in Sources */,

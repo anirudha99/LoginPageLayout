@@ -23,10 +23,15 @@ struct RealmManager {
         })
     }
     
-    mutating func deleteNote(index: Int){
-        let notesReal = realmInstance.objects(NotesItem.self)
+//    mutating func deleteNote(index: Int){
+//        let notesReal = realmInstance.objects(NotesItem.self)
+//        try! realmInstance.write({
+//            realmInstance.delete(notesReal[index])
+//        })
+//    }
+    mutating func deleteNote(note: NotesItem){
         try! realmInstance.write({
-            realmInstance.delete(notesReal[index])
+            realmInstance.delete(note)
         })
     }
     

@@ -101,13 +101,22 @@ struct NetworkManager {
     //        }
     //    }
     
-    func deleteData(note: NoteItem) {
-        db.collection("notes").document(note.id).delete { error in
-            if let error = error {
-                print(error.localizedDescription)
-            }
+//    func deleteData(note: NoteItem) {
+//        db.collection("notes").document(note.id).delete { error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+    func deleteNote(_ noteId:String) {
+        db.collection("notes").document(noteId).delete { error in
+          if let error = error {
+            print(error.localizedDescription)
+          }
         }
-    }
+      }
+    
+//    func deleteData(noteId)
     
     func updateData(note: NoteItem){
         db.collection("notes").document(note.id).updateData(["title": note.title, "note": note.note]) { error in
@@ -194,7 +203,7 @@ struct NetworkManager {
             
             guard let uid = NetworkManager.shared.getUID() else { return }
             
-            database.collection("notes").whereField("user", isEqualTo: uid).limit(to: 10).getDocuments { snapshot, error in
+            db.collection("notes").whereField("user", isEqualTo: uid).limit(to: 10).getDocuments { snapshot, error in
                 var notes: [NoteItem] = []
                 
                 if let error = error {
@@ -216,13 +225,10 @@ struct NetworkManager {
                     let newNote = NoteItem(id: id, title: title, note: note, user: user, date: date)
                     notes.append(newNote)
                 }
-                lastDoc = snapshot.documents.last
+                lastDocument = snapshot.documents.last
     //            completion(notes, nil)
                 completion(.success(notes))
             }
         }
-    func resultType(){
-        
-    }
 }
 

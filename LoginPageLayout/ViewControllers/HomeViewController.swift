@@ -48,7 +48,7 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         //        fetchData()
         //        fetchNoteRealm()
-//        self.noteCollection.reloadData()
+        //        self.noteCollection.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,6 +102,27 @@ class HomeViewController: UIViewController {
         noteCollection.register(NotesCollectionViewCell.self, forCellWithReuseIdentifier: cellIdentifer )
     }
     
+    //check if user is already logged in
+    func checkUserAlreadyLoggedIn(){
+        //Previous sign in
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+            if error != nil && NetworkManager.shared.getUID() == nil {
+                print("Error in login!!")
+                // Show the app's signed-out state.
+                DispatchQueue.main.async {
+                    self.transitionToMainPage()
+                }
+                return
+            }
+        }
+        
+        if let token = AccessToken.current,
+           !token.isExpired {
+            // User is logged in
+            return
+        }
+    }
+    
     @objc func handleMenuToggle(){
         delegate?.handleMenuToggle(forMenuOption: nil)
         print("Toggle menu")
@@ -140,21 +161,70 @@ class HomeViewController: UIViewController {
     //        //print(notesRealm)
     //    }
     
+    func updateNoteUI(notes: [NoteItem]){
+        self.noteList = notes
+        if notes.count < 8 {
+            self.hasMoreNotes = false
+        }
+        DispatchQueue.main.async {
+            self.noteCollection.reloadData()
+        }
+    }
+    
+    
+    //Pagination data - Fetch data for the display
+    func getNotesforPag(){
+        
+//        NetworkManager.shared.resultType { result in
+//            switch result{
+//
+//            case .success(let notes):
+//                self.updateNoteUI(notes: notes)
+//
+//            case .failure(let error):
+//                self.showAlert(title: "Error while fetching notes", message: error.localizedDescription)
+//            }
+//        }
+        
+        RealmManager.shared.fetchNotes { notesArray in
+            self.notesRealm = notesArray
+        }
+        NetworkManager.shared.fetchNoteData { NoteItem in
+            if NoteItem.count < 8 {
+                self.hasMoreNotes = false
+            }
+            self.noteList = NoteItem
+            //            print("NOTESSSSSS!!!!!!!!!!!!!!!!")
+            //            print(self.noteList)
+            self.filteredNotes = self.noteList
+            DispatchQueue.main.async {
+                self.noteCollection.reloadData()
+            }
+        }
+    }
     
     //delete function
     @objc func deleteNote(_ sender: UIButton){
         print("Delete button pressed")
         
         let deleteNote = noteList[sender.tag]
+        let deleteNoteId = noteList[sender.tag].id
+        let deleteRealNote = notesRealm[sender.tag]
         
         print(deleteNote.title)
+        DatabaseManager.shared.deleteNote(deleteNoteId: deleteNoteId, deleteRealNote: deleteRealNote)
         
-        NetworkManager.shared.deleteData(note: deleteNote)
-        RealmManager.shared.deleteNote(index: sender.tag)
-
+        //        NetworkManager.shared.deleteData(note: deleteNote) // Old methods
+        //        RealmManager.shared.deleteNote(index: sender.tag)
+        
         noteList.remove(at: sender.tag)
+        notesRealm.remove(at: sender.tag)
         noteCollection.reloadData()
     }
+    
+    
+    
+    
     
     //toggle list and grid view
     @objc func toggleButtontapped(){
@@ -166,49 +236,6 @@ class HomeViewController: UIViewController {
             toggleButton.image = UIImage(systemName: "rectangle.split.2x1")?.withRenderingMode(.alwaysOriginal)
         }
         noteCollection.reloadData()
-    }
-    
-    //Pagination data
-    func getNotesforPag(){
-        
-        RealmManager.shared.fetchNotes { notesArray in
-            self.notesRealm = notesArray
-        }
-//        RealmManager.shared.fetchNotesPag()
-        NetworkManager.shared.fetchNoteData { NoteItem in
-            
-            if NoteItem.count < 8 {
-                self.hasMoreNotes = false
-            }
-            self.noteList = NoteItem
-            print("NOTESSSSSS!!!!!!!!!!!!!!!!")
-//            print(self.noteList)
-            self.filteredNotes = self.noteList
-            DispatchQueue.main.async {
-                self.noteCollection.reloadData()
-            }
-        }
-    }
-    
-    //check if user is already logged in
-    func checkUserAlreadyLoggedIn(){
-        //Previous sign in
-        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-            if error != nil && NetworkManager.shared.getUID() == nil {
-                print("Error in login!!")
-                // Show the app's signed-out state.
-                DispatchQueue.main.async {
-                    self.transitionToMainPage()
-                }
-                return
-            }
-        }
-        
-        if let token = AccessToken.current,
-           !token.isExpired {
-            // User is logged in
-            return
-        }
     }
     
     func createspinnerFooter()-> UIView{
@@ -229,28 +256,21 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: NotesCollectionViewCell?
-        if indexPath.row == noteList.count - 1 && hasMoreNotes {
-            cell = collectionView.dequeueReusableCell(withReuseIdentifier: "loadingCell", for: indexPath) as?
-            NotesCollectionViewCell
-            cell?.activityIndicator.startAnimating()
-            return cell!
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotesCollectionViewCell", for: indexPath) as! NotesCollectionViewCell
+        
+        if searching {
+            cell.noteTitleLabel.text = filteredNotes[indexPath.row].title
+            cell.noteLabel.text = filteredNotes[indexPath.row].note
+            
+        } else{
+            cell.noteTitleLabel.text = noteList[indexPath.row].title
+            cell.noteLabel.text = noteList[indexPath.row].note
         }
-        else{
-             cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotesCollectionViewCell", for: indexPath) as! NotesCollectionViewCell
-        }
         
-        let note = searching ?  filteredNotes[indexPath.row] : noteList[indexPath.row]
+        cell.noteDeleteButton.tag = indexPath.row
+        cell.noteDeleteButton.addTarget(self, action: #selector(deleteNote), for: .touchUpInside)
         
-        cell?.note = note
-        
-//        cell.noteTitleLabel.text = note.title
-//        cell.noteLabel.text = note.note
-        
-        cell?.noteDeleteButton.tag = indexPath.row
-        cell?.noteDeleteButton.addTarget(self, action: #selector(deleteNote), for: .touchUpInside)
-        
-        return cell!
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -261,7 +281,16 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         noteVc.isNew = false
         noteVc.note = noteList[indexPath.row]
-        noteVc.noteRealm = notesRealm[indexPath.row]
+        //        noteVc.noteRealm = notesRealm[indexPath.row]
+        
+        
+        let title = noteList[indexPath.row].title
+        let content = noteList[indexPath.row].note
+        let predict = NSPredicate.init(format: "%K == %@", "title",title)
+        let predict2 = NSPredicate.init(format: "%K == %@", "note",content)
+        let query = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.or, subpredicates: [predict,predict2])
+        let notesReal = realmInstance.objects(NotesItem.self).filter(query)
+        noteVc.noteRealm = notesReal.first
         
         let presentVC = UINavigationController(rootViewController: noteVc)
         presentVC.modalPresentationStyle = .fullScreen
@@ -307,59 +336,25 @@ extension HomeViewController: UISearchResultsUpdating{
 
 extension HomeViewController: UIScrollViewDelegate{
     
-//    func scrollViewDidScroll(_ scrollView: UIScrollView){
-//
-//        let position = scrollView.contentOffset.y
-//
-//        print("position - \(position)")
-//        print("Frame size - \(noteCollection.contentSize.height-scrollView.frame.size.height-100)")
-//
-//        if position > (noteCollection.contentSize.height-scrollView.frame.size.height-100) {
-//
-//            //fetch more data
-//            print("Started Fetching - ++++++++++++++++++===============")
-//            guard hasMoreNotes else { return}
-//
-//            print(fetchingMoreNotes)
-//
-//            guard !fetchingMoreNotes else{
-//                print("Fetching completed - !!!!!!!!!!!!!!!11111111112222222")
-//                return
-//            }
-////            if fetchingMoreNotes == false {
-////                fetchingMoreNotes = true
-////            }
-//            print("scrolled!!!!! - $$$$$$$$$$$$$$$$$$$$$$$$$$%%%%%%%")
-//
-//            NetworkManager.shared.fetchMoreNotesData { notes in
-//                if notes.count < 8 {
-//                    self.hasMoreNotes = false
-//                    print(">>>>>>>>>>>>>>>>>>>")
-//                }
-//                self.noteList.append(contentsOf: notes)
-////                self.filteredNotes = self.noteList
-//                self.noteCollection.reloadData()
-//            }
-//        }
-//    }
-    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let offsetY         = scrollView.contentOffset.y
         let contentHeight   = scrollView.contentSize.height
         let height          = scrollView.frame.size.height
         
         if offsetY > contentHeight - height{
-            print("scroll height- %%%%%%%%")
+            //            print("scroll height- %%%%%%%%")
             guard hasMoreNotes else { return}
             guard !fetchingMoreNotes else{
-                print("Fetching completed - !!!!!!!!!!!!!!!11111111112222222")
+                print("Fetching completed")
                 return
             }
+            //            self.noteCollection.tableFooterView = createspinnerFooter()
             NetworkManager.shared.fetchMoreNotesData { notes in
                 if notes.count < 8 {
                     self.hasMoreNotes = false
                     print(">>>>>>>>>>>>>>>>>>>")
                 }
+                //                self.noteCollection.tableFooterView = nil
                 self.noteList.append(contentsOf: notes)
                 //                self.filteredNotes = self.noteList
                 self.noteCollection.reloadData()

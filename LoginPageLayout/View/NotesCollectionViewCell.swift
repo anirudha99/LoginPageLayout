@@ -4,19 +4,19 @@
 //
 //  Created by Anirudha SM on 27/10/21.
 //
-
+import Foundation
 import UIKit
 
 class NotesCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
-    var note: NoteItem {
-        didSet{
-            noteTitleLabel.text = note.title
-            noteLabel.text = note.note
-        }
-    }
+//    var note: NoteItem {
+//        didSet{
+//            noteTitleLabel.text = note.title
+//            noteLabel.text = note.note
+//        }
+//    }
     
     var activityIndicator: UIActivityIndicatorView!
     
@@ -28,14 +28,6 @@ class NotesCollectionViewCell: UICollectionViewCell {
         label.text = "Sample text for title"
         return label
     }()
-    
-//    let noteLabel: UILabel = {
-//        let label = UILabel()
-//        label.textColor = .white
-//        label.font = UIFont.systemFont(ofSize: 18)
-//        label.text = "Sample text for note"
-//        return label
-//    }()
     
     var noteLabel:  UITextView = {
     let label = UITextView()
@@ -53,26 +45,12 @@ class NotesCollectionViewCell: UICollectionViewCell {
         delbtn.setImage(UIImage(systemName: "xmark.bin"), for: UIControl.State.normal)
         return delbtn
     }()
-    
-//    var listViewButton: UIButton = {
-//        let listViewBtn = UIButton()
-//        listViewBtn.backgroundColor = UIColor.white
-//        listViewBtn.setImage(UIImage(systemName: "list.bullet"), for: UIControl.State.normal)
-//        return listViewBtn
-//    }()
   
-    
-   
     //MARK: - Init
     
     override init(frame: CGRect) {
-        
         super.init(frame: frame)
         backgroundColor = .darkGray
-        
-        init(note:NoteItem){
-            self.note = self.note
-        }
         configure()
     }
     
