@@ -17,7 +17,10 @@ struct Constants{
   
     struct Image{
         
-       static let profileDefaultImage: UIImage = UIImage(systemName: "person")!
+        static let profileDefaultImage: UIImage = UIImage(systemName: "person")!
+        static let archive = UIImage(systemName: "folder.fill.badge.plus")
+        static let unarchive = UIImage(systemName: "folder.fill.badge.minus")
+        static let remind = UIImage(systemName: "alarm.fill")
     }
     
 }

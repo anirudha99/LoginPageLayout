@@ -45,6 +45,14 @@ class NotesCollectionViewCell: UICollectionViewCell {
         delbtn.setImage(UIImage(systemName: "xmark.bin"), for: UIControl.State.normal)
         return delbtn
     }()
+    
+    var noteArchiveButton: UIButton = {
+        let archivebtn = UIButton()
+//        delbtn.backgroundColor = UIColor.black
+//        delbtn.setTitle("Delete", for: UIControl.State.normal)
+        archivebtn.setImage(UIImage(systemName: "archivebox.fill"), for: UIControl.State.normal)
+        return archivebtn
+    }()
   
     //MARK: - Init
     
@@ -70,8 +78,8 @@ class NotesCollectionViewCell: UICollectionViewCell {
         noteLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(noteDeleteButton)
         noteDeleteButton.translatesAutoresizingMaskIntoConstraints = false
-//        addSubview(listViewButton)
-//        listViewButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(noteArchiveButton)
+        noteArchiveButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             noteTitleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
@@ -89,6 +97,11 @@ class NotesCollectionViewCell: UICollectionViewCell {
             noteDeleteButton.heightAnchor.constraint(equalToConstant: 15),
             noteDeleteButton.widthAnchor.constraint(equalToConstant: 15),
           
+            noteArchiveButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            noteArchiveButton.rightAnchor.constraint(equalTo: noteDeleteButton.leftAnchor, constant: -10),
+            noteArchiveButton.heightAnchor.constraint(equalToConstant: 15),
+            noteArchiveButton.widthAnchor.constraint(equalToConstant: 15),
+            
 //            listViewButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
 //            listViewButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
 //            listViewButton.heightAnchor.constraint(equalToConstant: 15),

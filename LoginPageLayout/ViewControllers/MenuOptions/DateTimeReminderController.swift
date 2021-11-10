@@ -7,9 +7,10 @@
 
 import UIKit
 
-class NotificationController: UIViewController{
+class DateTimeReminderController: UIViewController{
     
     //MARK: - Properties
+    
     
     //MARK: - Init
     
@@ -32,10 +33,11 @@ class NotificationController: UIViewController{
         
         navigationController?.navigationBar.barTintColor = .darkGray
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Notifications"
+        navigationItem.title = "Reminders"
         navigationController?.navigationBar.barStyle = .black
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark.app.fill")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleDismiss))
+       
     }
 }
 

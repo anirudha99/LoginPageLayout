@@ -14,6 +14,7 @@ class NotesItem: Object {
     @objc dynamic var title = ""
     @objc dynamic var note = ""
     @objc dynamic var uid = ""
+//    @objc dynamic var isArchive : Bool = false
     @objc dynamic var date = Date()
     
 }

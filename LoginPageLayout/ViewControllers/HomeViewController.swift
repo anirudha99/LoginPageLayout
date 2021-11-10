@@ -115,7 +115,6 @@ class HomeViewController: UIViewController {
                 return
             }
         }
-        
         if let token = AccessToken.current,
            !token.isExpired {
             // User is logged in
@@ -161,46 +160,48 @@ class HomeViewController: UIViewController {
     //        //print(notesRealm)
     //    }
     
-    func updateNoteUI(notes: [NoteItem]){
-        self.noteList = notes
+    func updateNoteCollectionViewUI(notes: [NoteItem]){
         if notes.count < 8 {
+//            print("&&&&&&&&&&&&&&&&&&&77777777")
             self.hasMoreNotes = false
         }
+        self.noteList = notes
+        self.filteredNotes = self.noteList
         DispatchQueue.main.async {
             self.noteCollection.reloadData()
         }
     }
     
-    
     //Pagination data - Fetch data for the display
     func getNotesforPag(){
         
-//        NetworkManager.shared.resultType { result in
-//            switch result{
-//
-//            case .success(let notes):
-//                self.updateNoteUI(notes: notes)
-//
-//            case .failure(let error):
-//                self.showAlert(title: "Error while fetching notes", message: error.localizedDescription)
-//            }
-//        }
+        NetworkManager.shared.resultType(archivedNotes: false, completion: { result in
+            switch result{
+            case .success(let notes):
+//                print("NOTESSSSSS!!!!!!!!!!!!!!!!")
+                self.updateNoteCollectionViewUI(notes: notes)
+                
+            case .failure(let error):
+                self.showAlert(title: "Error while fetching notes", message: error.localizedDescription)
+            }
+        })
         
         RealmManager.shared.fetchNotes { notesArray in
             self.notesRealm = notesArray
+//            print("QQQQQQQ!!!!!!#######")
         }
-        NetworkManager.shared.fetchNoteData { NoteItem in
-            if NoteItem.count < 8 {
-                self.hasMoreNotes = false
-            }
-            self.noteList = NoteItem
-            //            print("NOTESSSSSS!!!!!!!!!!!!!!!!")
-            //            print(self.noteList)
-            self.filteredNotes = self.noteList
-            DispatchQueue.main.async {
-                self.noteCollection.reloadData()
-            }
-        }
+        //        NetworkManager.shared.fetchNoteData(archivedNotes: false) { NoteItem in
+        //            if NoteItem.count < 8 {
+        //                self.hasMoreNotes = false
+        //            }
+        //            self.noteList = NoteItem
+        //                        print("NOTESSSSSS!!!!!!!!!!!!!!!!")
+        //            //            print(self.noteList)
+        //            self.filteredNotes = self.noteList
+        //            DispatchQueue.main.async {
+        //                self.noteCollection.reloadData()
+        //            }
+        //        }
     }
     
     //delete function
@@ -222,9 +223,16 @@ class HomeViewController: UIViewController {
         noteCollection.reloadData()
     }
     
-    
-    
-    
+    //    @objc func archiveNote(_ sender: UIButton){
+    //
+    //        print("Archieve button pressed!!!")
+    //        let archiveNote = noteList[sender.tag]
+    //        let archiveNoteRealm = notesRealm[sender.tag]
+    //        note!.isArchive = !note!.isArchive
+    //
+    //        print(archiveNote.title)
+    //
+    //    }
     
     //toggle list and grid view
     @objc func toggleButtontapped(){
@@ -238,15 +246,15 @@ class HomeViewController: UIViewController {
         noteCollection.reloadData()
     }
     
-    func createspinnerFooter()-> UIView{
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
-        let spinner = UIActivityIndicatorView()
-        spinner.center = footerView.center
-        footerView.addSubview(spinner)
-        spinner.startAnimating()
-        
-        return footerView
-    }
+    //    func createspinnerFooter()-> UIView{
+    //        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
+    //        let spinner = UIActivityIndicatorView()
+    //        spinner.center = footerView.center
+    //        footerView.addSubview(spinner)
+    //        spinner.startAnimating()
+    //
+    //        return footerView
+    //    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -270,6 +278,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.noteDeleteButton.tag = indexPath.row
         cell.noteDeleteButton.addTarget(self, action: #selector(deleteNote), for: .touchUpInside)
         
+        //        cell.noteArchiveButton.tag = indexPath.row
+        //        cell.noteArchiveButton.addTarget(self, action: #selector(archiveNote), for: .touchUpInside)
+        
         return cell
     }
     
@@ -283,12 +294,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         noteVc.note = noteList[indexPath.row]
         //        noteVc.noteRealm = notesRealm[indexPath.row]
         
-        
         let title = noteList[indexPath.row].title
         let content = noteList[indexPath.row].note
+        
         let predict = NSPredicate.init(format: "%K == %@", "title",title)
         let predict2 = NSPredicate.init(format: "%K == %@", "note",content)
         let query = NSCompoundPredicate(type: NSCompoundPredicate.LogicalType.or, subpredicates: [predict,predict2])
+        
         let notesReal = realmInstance.objects(NotesItem.self).filter(query)
         noteVc.noteRealm = notesReal.first
         
@@ -352,7 +364,7 @@ extension HomeViewController: UIScrollViewDelegate{
             NetworkManager.shared.fetchMoreNotesData { notes in
                 if notes.count < 8 {
                     self.hasMoreNotes = false
-                    print(">>>>>>>>>>>>>>>>>>>")
+//                    print(">>>>>>>>>>>>>>>>>>>")
                 }
                 //                self.noteCollection.tableFooterView = nil
                 self.noteList.append(contentsOf: notes)

@@ -113,14 +113,14 @@ class ContainerController: UIViewController{
 //            presentVc.modalPresentationStyle = .fullScreen
 //            present(presentVc, animated: true, completion: nil)
             
-        case .Inbox:
-            let controller = InboxController()
+        case .Archive:
+            let controller = ArchiveController()
             let presentVc = UINavigationController(rootViewController: controller)
             presentVc.modalPresentationStyle = .fullScreen
             present(presentVc, animated: true, completion: nil)
             
-        case .Notifications:
-            let controller = NotificationController()
+        case .Reminders:
+            let controller = DateTimeReminderController()
             let presentVc = UINavigationController(rootViewController: controller)
             presentVc.modalPresentationStyle = .fullScreen
             present(presentVc, animated: true, completion: nil)

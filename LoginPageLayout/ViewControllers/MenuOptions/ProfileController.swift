@@ -26,9 +26,6 @@ class ProfileController: UIViewController {
     
     var imagePickerController: UIImagePickerController!
     
-//    private let storage = Storage.storage().reference()
-//    let defaultImage: UIImage = UIImage(systemName: "person")!
-    
     
     //MARK: - Init
     
@@ -75,32 +72,6 @@ class ProfileController: UIViewController {
     @IBAction func choosePictureBtn(_ sender: UIButton) {
     }
     
-//    func uploadProfileImage(_ image : UIImage, completion : @escaping((_ url: URL?)->())){
-//        guard let uid = NetworkManager.shared.getUID() else{
-//            return
-//        }
-//        let storageRef = Storage.storage().reference().child("user/\(uid)")
-//        
-//        guard let imageData = image.jpegData(compressionQuality: 0.75) else{
-//            return
-//        }
-//        
-//        let metaData = StorageMetadata()
-//        metaData.contentType = "image/jpg"
-//        
-//        storageRef.putData(imageData, metadata: metaData) { metaData, error in
-//            if error == nil, metaData != nil {
-//                //success
-//                storageRef.downloadURL { url, error in
-//                    completion(url)
-//                }
-//            } else {
-//                //fail
-//                completion(nil)
-//            }
-//        }
-//    }
-    
     //MARK: - Helper functions
     
     func configureUI(){
@@ -144,23 +115,6 @@ extension ProfileController: UIImagePickerControllerDelegate, UINavigationContro
         }
         self.profileImage.image = image
         ImageUploader.uploadImage(image: image)
-//        guard let imageData = image.pngData() else {
-//            return
-//        }
-//        storage.child("profile/file.png").putData(imageData, metadata: nil) { _, error in
-//            guard error == nil else {
-//                return
-//            }
-//
-//            self.storage.child("profile/file.png").downloadURL { url, error in
-//                guard let url = url, error == nil else {
-//                    return
-//                }
-//                let urlString = url.absoluteString
-//                print("Download URL: \(urlString)")
-//                UserDefaults.standard.set(urlString, forKey: "url")
-//            }
-//        }
         picker.dismiss(animated: true, completion: nil)
     }
 }

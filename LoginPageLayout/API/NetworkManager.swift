@@ -118,8 +118,16 @@ struct NetworkManager {
     
 //    func deleteData(noteId)
     
+//    func updateData(note: NoteItem){
+//        db.collection("notes").document(note.id).updateData(["title": note.title, "note": note.note]) { error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+    
     func updateData(note: NoteItem){
-        db.collection("notes").document(note.id).updateData(["title": note.title, "note": note.note]) { error in
+        db.collection("notes").document(note.id).updateData(note.dictionary) { error in
             if let error = error {
                 print(error.localizedDescription)
             }
@@ -138,11 +146,11 @@ struct NetworkManager {
         task.resume()
     }
     
-    func fetchNoteData(completion: @escaping([NoteItem]) -> Void){
+    func fetchNoteData(archivedNotes: Bool,completion: @escaping([NoteItem]) -> Void){
         
         guard let uid = NetworkManager.shared.getUID() else { return }
         
-        db.collection("notes").order(by: "date").limit(to: 8).getDocuments { snapshot, error in
+        db.collection("notes").order(by: "date").whereField("isArchive", isEqualTo: archivedNotes).limit(to: 8).getDocuments { snapshot, error in
             
             var notes: [NoteItem] = []
             
@@ -157,9 +165,10 @@ struct NetworkManager {
                     let title = noteData["title"] as? String ?? ""
                     let note = noteData["note"] as? String ?? ""
                     let user = noteData["user"] as? String ?? ""
+                    let isArchive = noteData["isArchive"] as? Bool ?? false
                     let date = (noteData["date"] as? Timestamp)?.dateValue() ?? Date()
                     
-                    notes.append(NoteItem(id: id, title: title, note: note, user: user, date: date))
+                    notes.append(NoteItem(id: id, title: title, note: note, user: user, isArchive: isArchive, date: date))
                 }
                 lastDocument = snapshot!.documents.last
                 completion(notes)
@@ -186,9 +195,10 @@ struct NetworkManager {
                     let title = noteData["title"] as? String ?? ""
                     let note = noteData["note"] as? String ?? ""
                     let user = noteData["user"] as? String ?? ""
+                    let isArchive = noteData["isArchive"] as? Bool ?? false
                     let date = (noteData["date"] as? Timestamp)?.dateValue() ?? Date()
                     
-                    notes.append(NoteItem(id: id, title: title, note: note, user: user, date: date))
+                    notes.append(NoteItem(id: id, title: title, note: note, user: user, isArchive: isArchive, date: date))
                 }
                 lastDocument = snapshot!.documents.last
                 print(notes)
@@ -199,30 +209,29 @@ struct NetworkManager {
         }
     }
     
-    func resultType(completion: @escaping(Result<[NoteItem], Error>) -> Void) {
+    func resultType(archivedNotes: Bool,completion: @escaping(Result<[NoteItem], Error>) -> Void) {
             
             guard let uid = NetworkManager.shared.getUID() else { return }
             
-            db.collection("notes").whereField("user", isEqualTo: uid).limit(to: 10).getDocuments { snapshot, error in
+        db.collection("notes").whereField("user", isEqualTo: uid).whereField("isArchive", isEqualTo: archivedNotes).limit(to: 10).getDocuments { snapshot, error in
                 var notes: [NoteItem] = []
-                
                 if let error = error {
                     completion(.failure(error))
                     print(error.localizedDescription)
                     return
                 }
-                
                 guard let snapshot = snapshot else { return }
-                
+            
                 for doc in snapshot.documents {
                     let data = doc.data()
                     let id = doc.documentID
                     let title = data["title"] as? String ?? ""
                     let note = data["note"] as? String ?? ""
                     let user = data["user"] as? String ?? ""
+                    let isArchive = data["isArchive"] as? Bool ?? false
                     let date = (data["date"] as? Timestamp)?.dateValue() ?? Date()
                     
-                    let newNote = NoteItem(id: id, title: title, note: note, user: user, date: date)
+                    let newNote = NoteItem(id: id, title: title, note: note, user: user, isArchive: isArchive, date: date)
                     notes.append(newNote)
                 }
                 lastDocument = snapshot.documents.last

@@ -10,8 +10,8 @@ import UIKit
 enum MenuOption: Int, CustomStringConvertible{
     
     case Profile
-    case Inbox
-    case Notifications
+    case Archive
+    case Reminders
     case Settings
     case Logout
     
@@ -20,10 +20,10 @@ enum MenuOption: Int, CustomStringConvertible{
             
         case .Profile:
             return "Profile"
-        case .Inbox:
-            return "Inbox"
-        case .Notifications:
-            return "Notifications"
+        case .Archive:
+            return "Archive"
+        case .Reminders:
+            return "Reminders"
         case .Settings:
             return "Settings"
         case .Logout:
@@ -36,9 +36,9 @@ enum MenuOption: Int, CustomStringConvertible{
             
         case .Profile:
             return UIImage(named: "person") ?? UIImage()
-        case .Inbox:
+        case .Archive:
             return UIImage(named: "mail") ?? UIImage()
-        case .Notifications:
+        case .Reminders:
             return UIImage(named: "menu2") ?? UIImage()
         case .Settings:
             return UIImage(named: "settings") ?? UIImage()

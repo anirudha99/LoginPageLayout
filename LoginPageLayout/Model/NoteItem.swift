@@ -14,13 +14,15 @@ struct NoteItem: Codable{
     var title: String
     var note: String
     var user: String
+    var isArchive: Bool
     var date: Date
     
-    init(id: String, title: String, note: String, user: String, date: Date){
+    init(id: String, title: String, note: String, user: String, isArchive: Bool, date: Date){
         self.id = id
         self.title = title
         self.note = note
         self.user = user
+        self.isArchive = isArchive
         self.date = date
     }
     
@@ -29,6 +31,7 @@ struct NoteItem: Codable{
             "title": title,
             "note": note,
             "user": user,
+            "isArchive": isArchive,
             "date": date
             ]
         }
