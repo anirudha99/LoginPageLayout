@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>767890091915-2pqhdk1pkf0agpbskt3akfat1mjltnm3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.767890091915-2pqhdk1pkf0agpbskt3akfat1mjltnm3</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.googleusercontent.apps.480556356863-d0jfv8h59vf8dpk5997bhf64cvh7bh83</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB0v2on6K7PbLHpWS6cdnOhHjJJruA539I</string>
+	<key>GCM_SENDER_ID</key>
+	<string>767890091915</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.anirudha.iostraining.LoginPageLayout</string>
+	<key>PROJECT_ID</key>
+	<string>customlogindemo-73082</string>
+	<key>STORAGE_BUCKET</key>
+	<string>customlogindemo-73082.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:767890091915:ios:e4182fee0a15357c64498e</string>
+</dict>
+</plist>
